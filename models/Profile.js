@@ -34,6 +34,8 @@ const profileSchema = new Schema({
             ref: 'Post'
         }
     ]
+}, {
+    timestamps: true
 })
 
 const Profile = model('Profile', profileSchema);

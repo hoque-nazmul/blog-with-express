@@ -31,6 +31,8 @@ const postSchema = new Schema({
             ref: 'Comment'
         }
     ]
+}, {
+    timestamps: true
 })
 
 const Post = model('Post', postSchema);
