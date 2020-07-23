@@ -7,6 +7,12 @@ const profileSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: User
     },
+    name: {
+        type: String,
+        required: true,
+        trim: true,
+        maxlength: 30
+    },
     title: {
         type: String,
         trim: true,
