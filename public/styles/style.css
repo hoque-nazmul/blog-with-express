@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;;
+}
+
+.navbar, #footer {
+    background-color: #563D7C;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.navbar-light .navbar-brand {
+    color: white;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: rgba(240, 236, 236, 0.9);
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(175, 159, 159, 0.9);
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: rgba(218, 200, 200, 0.9);
+}
+
+#footer {
+    padding: 20px 0px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#footer p {
+    margin: 0;
+    padding: 0;
+}

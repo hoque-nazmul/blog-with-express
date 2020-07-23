@@ -24,6 +24,9 @@ const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.
 
 
 app.get('/', (req, res) => {
+
+    res.render('pages/signup', {title: "Create a new Account"})
+
     res.json({
         message: "Hello World"
     });
