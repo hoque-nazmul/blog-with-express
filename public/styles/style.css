@@ -11,7 +11,7 @@ body {
 .navbar, #footer {
     background-color: #563D7C;
     color: white;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .navbar-light .navbar-brand {
@@ -31,6 +31,7 @@ body {
 }
 
 #footer {
+    margin-top: 50px;
     padding: 20px 0px;
     font-size: 16px;
     text-align: center;
