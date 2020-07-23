@@ -1,8 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
+
+// View Enngine Setup
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+// Middlewares
+const middlewares = [
+    morgan('dev'),
+    express.static('public'),
+    express.urlencoded({ extended: true }),
+    express.json()
+]
+app.use(middlewares)
 
 // required info
 const PORT = process.env.PORT || 8000;
