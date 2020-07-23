@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -22,11 +23,9 @@ app.use(middlewares)
 const PORT = process.env.PORT || 8000;
 const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.tamdy.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
+app.use('/auth', authRoutes)
 
 app.get('/', (req, res) => {
-
-    res.render('pages/signup', {title: "Create a new Account"})
-
     res.json({
         message: "Hello World"
     });
