@@ -4,12 +4,8 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card card-body">
-                <h4 class="text-center mb-3">Create a new Account</h4>
-                <form action="/auth/signup" method="POST">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" name="username" id="username" class="form-control">
-                    </div>
+                <h4 class="text-center mb-3">Login to your Account</h4>
+                <form action="/auth/login" method="POST">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" name="email" id="email" class="form-control">
@@ -18,13 +14,9 @@
                         <label for="password">Password</label>
                         <input type="password" name="password" id="password" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
-                    </div>
                     <input type="submit" value="Submit" class="btn btn-info btn-block">
                 </form>
-                <a href="/auth/login" class="mt-3 text-center">I have already an account.</a>
+                <a href="/auth/signup" class="mt-3 text-center">Didn't have any account. Create One</a>
             </div>
         </div>
     </div>
