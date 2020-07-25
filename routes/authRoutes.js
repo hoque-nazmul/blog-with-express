@@ -1,5 +1,6 @@
 const authRoutes = require('express').Router();
 const signupValidator = require('./../validator/signupValidator');
+const loginValidator = require('./../validator/loginValidator');
 const { 
     signupGetController,
     signupPostController,
@@ -13,7 +14,7 @@ const {
 authRoutes.get('/signup', signupGetController);
 authRoutes.post('/signup',signupValidator, signupPostController);
 authRoutes.get('/login', loginGetController);
-authRoutes.post('/login', loginPostController);
+authRoutes.post('/login',loginValidator, loginPostController);
 authRoutes.get('/logout', logoutController);
 
 module.exports = authRoutes;

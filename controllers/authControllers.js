@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require("../models/User");
 const errorFormatter = require('./../utilities/validationErrorFormatter');
 const { validationResult } = require('express-validator');
+const validationErrorFormatter = require('./../utilities/validationErrorFormatter');
 
 exports.signupGetController = (req, res, next) => {
     res.render('pages/signup', { title: "Create a new Account", error: {}, value: {} });
@@ -34,11 +35,17 @@ exports.signupPostController = async (req, res, next) => {
 }
 
 exports.loginGetController = (req, res, next) => {
-    res.render('pages/login', { title: "Login to your Account" })
+    res.render('pages/login', { title: "Login to your Account", error: {} })
 }
 
 exports.loginPostController = async (req, res, next) => {
     const { email, password } = req.body;
+
+    const errors = validationResult(req).formatWith(validationErrorFormatter);
+
+    if (!errors.isEmpty()){
+        return res.render('pages/login', { title: "Login to your Account", error: errors.mapped() })
+    }
 
     try {
         const user = await User.findOne({ email })
