@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
@@ -15,7 +16,15 @@ const middlewares = [
     morgan('dev'),
     express.static('public'),
     express.urlencoded({ extended: true }),
-    express.json()
+    express.json(),
+    session({
+        secret: process.env.SECRET_KEY || "blog_express",
+        resave: false,
+        saveUninitialized: false, 
+        cookie: {
+            maxAge: 7200000
+        }
+    })
 ]
 app.use(middlewares)
 
