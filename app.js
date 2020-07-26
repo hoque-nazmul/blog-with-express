@@ -7,6 +7,7 @@ require('dotenv').config();
 
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
+const dashboardRoutes = require('./routes/dasbboardRoutes');
 
 // Import Middlewa
 const { bindUserWithRequest } = require('./middleware/bindUseriWithRequest');
@@ -49,7 +50,8 @@ const middlewares = [
 ]
 app.use(middlewares)
 
-app.use('/auth', authRoutes)
+app.use('/auth', authRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 app.get('/', (req, res) => {
     res.json({
