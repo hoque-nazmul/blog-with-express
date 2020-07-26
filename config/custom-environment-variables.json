@@ -1,0 +1,7 @@
+{
+    "port" : "PORT",
+    "db_name": "DBNAME", 
+    "db_user" : "DBUSER", 
+    "db_password" : "DBPASS",
+    "secret_key" : "SECRET_KEY"
+}
