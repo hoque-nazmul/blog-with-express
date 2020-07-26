@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const session = require('express-session');
+const flash = require('connect-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config();
 
@@ -46,7 +47,8 @@ const middlewares = [
         store: store
     }),
     bindUserWithRequest(),
-    setLocals()
+    setLocals(), 
+    flash()
 ]
 app.use(middlewares)
 

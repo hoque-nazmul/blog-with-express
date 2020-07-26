@@ -4,9 +4,16 @@ const errorFormatter = require('./../utilities/validationErrorFormatter');
 const { validationResult } = require('express-validator');
 const validationErrorFormatter = require('./../utilities/validationErrorFormatter');
 const session = require('express-session');
+const Flash = require('./../utilities/Flash');
 
 exports.signupGetController = (req, res, next) => {
-    res.render('pages/signup', { title: "Create a new Account", error: {}, value: {} });
+    res.render('pages/signup',
+        {
+            title: "Create a new Account",
+            error: {},
+            value: {},
+            flashMessage: Flash.getFlashMsg(req)
+        });
 }
 
 exports.signupPostController = async (req, res, next) => {
@@ -15,7 +22,13 @@ exports.signupPostController = async (req, res, next) => {
     const errors = validationResult(req).formatWith(errorFormatter);
 
     if (!errors.isEmpty()) {
-        return res.render('pages/signup', { title: "Create a new Account", error: errors.mapped(), value: {username, email, password} });
+        return res.render('pages/signup',
+            {
+                title: "Create a new Account", 
+                error: errors.mapped(), 
+                value: { username, email, password },
+                flashMessage: Flash.getFlashMsg(req)
+            });
     }
 
     try {
@@ -26,9 +39,9 @@ exports.signupPostController = async (req, res, next) => {
             password: hashedPassword
         });
 
-        const createdUser = await user.save()
-        console.log("user created successfully");
-        res.render('pages/signup', { title: "Create a new Account" });
+        await user.save()
+        req.flash('success', 'Created your account successfully!')
+        res.redirect('/auth/login')
     } catch (err) {
         console.log(err);
         next(err)
@@ -36,8 +49,12 @@ exports.signupPostController = async (req, res, next) => {
 }
 
 exports.loginGetController = (req, res, next) => {
-    console.log(req.session.user, req.session.isLogin);
-    res.render('pages/login', { title: "Login to your Account", error: {} })
+    res.render('pages/login',
+        {
+            title: "Login to your Account",
+            error: {},
+            flashMessage: Flash.getFlashMsg(req)
+        })
 }
 
 exports.loginPostController = async (req, res, next) => {
@@ -45,23 +62,37 @@ exports.loginPostController = async (req, res, next) => {
 
     const errors = validationResult(req).formatWith(validationErrorFormatter);
 
-    if (!errors.isEmpty()){
-        return res.render('pages/login', { title: "Login to your Account", error: errors.mapped() })
+    if (!errors.isEmpty()) {
+        req.flash('fail', 'Please, Provide your recorded information')
+        return res.render('pages/login',
+            {
+                title: "Login to your Account",
+                error: errors.mapped(),
+                flashMessage: Flash.getFlashMsg(req)
+            })
     }
 
     try {
         const user = await User.findOne({ email })
         if (!user) {
-            return res.json({
-                message: "Invalid email or password"
-            })
+            req.flash('fail', 'Invalid Credentials')
+            return res.render('pages/login',
+                {
+                    title: "Login to your Account",
+                    error: {},
+                    flashMessage: Flash.getFlashMsg(req)
+                })
         }
 
         const match = await bcrypt.compare(password, user.password)
         if (!match) {
-            res.json({
-                message: "Invalid email or password"
-            })
+            req.flash('fail', 'Invalid Credentials')
+            return res.render('pages/login',
+                {
+                    title: "Login to your Account",
+                    error: {},
+                    flashMessage: Flash.getFlashMsg(req)
+                })
         } else {
             req.session.isLogin = true;
             req.session.user = user;
@@ -70,9 +101,9 @@ exports.loginPostController = async (req, res, next) => {
                     console.log(err);
                     return next(err);
                 }
+                req.flash('success', 'Successfully Logged in')
                 return res.redirect('/dashboard')
             })
-            // res.render('pages/login', { title: "Login to your Account", error: {} });
         }
 
     } catch (err) {
@@ -88,6 +119,7 @@ exports.logoutController = (req, res, next) => {
             console.log(err);
             next(err)
         }
+        
         return res.redirect('/auth/login');
     })
 }
