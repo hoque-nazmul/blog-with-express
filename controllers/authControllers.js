@@ -65,7 +65,14 @@ exports.loginPostController = async (req, res, next) => {
         } else {
             req.session.isLogin = true;
             req.session.user = user;
-            res.render('pages/login', { title: "Login to your Account", error: {} });
+            req.session.save(err => {
+                if (err) {
+                    console.log(err);
+                    return next(err);
+                }
+                return res.redirect('/dashboard')
+            })
+            // res.render('pages/login', { title: "Login to your Account", error: {} });
         }
 
     } catch (err) {
@@ -76,5 +83,11 @@ exports.loginPostController = async (req, res, next) => {
 }
 
 exports.logoutController = (req, res, next) => {
-
+    req.session.destroy(err => {
+        if (err) {
+            console.log(err);
+            next(err)
+        }
+        return res.redirect('/auth/login');
+    })
 }
