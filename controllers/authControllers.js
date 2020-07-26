@@ -3,6 +3,7 @@ const User = require("../models/User");
 const errorFormatter = require('./../utilities/validationErrorFormatter');
 const { validationResult } = require('express-validator');
 const validationErrorFormatter = require('./../utilities/validationErrorFormatter');
+const session = require('express-session');
 
 exports.signupGetController = (req, res, next) => {
     res.render('pages/signup', { title: "Create a new Account", error: {}, value: {} });
@@ -35,6 +36,7 @@ exports.signupPostController = async (req, res, next) => {
 }
 
 exports.loginGetController = (req, res, next) => {
+    console.log(req.session.user, req.session.isLogin);
     res.render('pages/login', { title: "Login to your Account", error: {} })
 }
 
@@ -61,8 +63,9 @@ exports.loginPostController = async (req, res, next) => {
                 message: "Invalid email or password"
             })
         } else {
-            console.log("user login successfully", user);
-            res.render('pages/login', { title: "Login to your Account" });
+            req.session.isLogin = true;
+            req.session.user = user;
+            res.render('pages/login', { title: "Login to your Account", error: {} });
         }
 
     } catch (err) {

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
@@ -10,6 +11,17 @@ const app = express();
 // View Enngine Setup
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// Required Info
+const PORT = process.env.PORT || 8000;
+const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.tamdy.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
+
+// Connect MongoDB Session Store
+const store = new MongoDBStore({
+    uri: uri,
+    collection: 'auth_sessions',
+    expires: 1000 * 60 * 60 * 2
+});
 
 // Middlewares
 const middlewares = [
@@ -20,17 +32,14 @@ const middlewares = [
     session({
         secret: process.env.SECRET_KEY || "blog_express",
         resave: false,
-        saveUninitialized: false, 
+        saveUninitialized: false,
         cookie: {
-            maxAge: 7200000
-        }
+            maxAge: 7200000 // 2hour
+        },
+        store: store
     })
 ]
 app.use(middlewares)
-
-// required info
-const PORT = process.env.PORT || 8000;
-const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.tamdy.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
 app.use('/auth', authRoutes)
 
@@ -50,5 +59,5 @@ mongoose.connect(uri, {
     })
     .catch(err => {
         console.log(err);
-    }) 
+    })
 
