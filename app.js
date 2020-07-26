@@ -3,8 +3,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
-const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
+
+// Import Routes
+const authRoutes = require('./routes/authRoutes');
+
+// Import Middlewa
+const { bindUserWithRequest } = require('./middleware/bindUseriWithRequest');
+const setLocals = require('./middleware/setLocals');
 
 const app = express();
 
@@ -37,7 +43,9 @@ const middlewares = [
             maxAge: 7200000 // 2hour
         },
         store: store
-    })
+    }),
+    bindUserWithRequest(),
+    setLocals()
 ]
 app.use(middlewares)
 
