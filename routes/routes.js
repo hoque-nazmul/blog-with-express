@@ -17,19 +17,13 @@ const routes = [
                 message: "Hello World"
             })
         }
-    }, 
-    {
-        path: '*', 
-        handler: (req, res) => {
-            res.render('pages/404')
-        }
     }
 ]
 
 // Export All Routes
 module.exports = (app) => {
     routes.forEach(route => {
-        if (route.path === '/' || route.path === '*'){
+        if (route.path === '/'){
             app.get(route.path, route.handler)
         } else {
             app.use(route.path, route.handler)

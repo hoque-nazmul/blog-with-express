@@ -24,6 +24,20 @@ setMiddlewares(app)
 // Using Route from Routes directory
 setRoutes(app);
 
+// Handling the Error Page
+app.use((req, res, next) => {
+    const error = new Error('404 Page not Found');
+    error.status = 404
+    next(error)
+})
+app.use((error, req, res, next) => {
+    if (error.status === 404) {
+        return res.render('pages/404')
+    }
+    console.log(error);
+    res.render('pages/500')
+})
+
 // Connecting Database with MongoDB via Mongoose
 mongoose.connect(uri, {
     useNewUrlParser: true,
