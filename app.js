@@ -1,18 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const morgan = require('morgan');
-const session = require('express-session'); 
-const flash = require('connect-flash');
-const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config();
 
+// Import All Routes & Middlewares
 const setMiddlewares = require('./middleware/middlewares');
 const setRoutes = require('./routes/routes')
 
-// Import Middlewa
-const { bindUserWithRequest } = require('./middleware/bindUseriWithRequest');
-const setLocals = require('./middleware/setLocals');
-
+// Initializing Express App
 const app = express();
 
 // View Enngine Setup
@@ -30,6 +24,7 @@ setMiddlewares(app)
 // Using Route from Routes directory
 setRoutes(app);
 
+// Connecting Database with MongoDB via Mongoose
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
