@@ -7,9 +7,7 @@ const config = require('config');
 const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config();
 
-// Import Routes
-const authRoutes = require('./routes/authRoutes');
-const dashboardRoutes = require('./routes/dasbboardRoutes');
+const setRoutes = require('./routes/routes')
 
 // Import Middlewa
 const { bindUserWithRequest } = require('./middleware/bindUseriWithRequest');
@@ -53,15 +51,8 @@ const middlewares = [
 ]
 app.use(middlewares)
 
-app.use('/auth', authRoutes);
-app.use('/dashboard', dashboardRoutes);
-
-app.get('/', (req, res) => {
-    res.json({
-        message: "Hello World"
-    });
-});
-
+// Using Route from Routes directory
+setRoutes(app);
 
 mongoose.connect(uri, {
     useNewUrlParser: true,
